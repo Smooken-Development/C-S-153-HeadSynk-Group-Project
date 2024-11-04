@@ -1,0 +1,101 @@
+'''
+Start HeadSynk
+
+doLogIn()
+    goodLogin = False
+    while (!goodLogin)
+
+        Prompt user for username and password
+        if username && password == good
+            goodLogin = True
+            break
+        else
+            display error box
+
+displayDashBoard()
+    display tracker buttons (mood, food, water, sleep, exercise)
+    display timeline switch buttons
+    display bar graph for percentage of daily goals met
+    display mood journal option
+    display analytics button
+    display saveButton
+
+    while continueProgram == True
+        match buttonInput
+            case "Mood":
+                trackMood()
+            case "Food":
+                trackFood()
+            case "Water":
+                trackWater()
+            case "Sleep":
+                trackSleep()
+            case "Exercise":
+                trackExercise()
+            case "Analytics":
+                displayAnalyticsWindow()
+            case "Save":
+                saveDailyProgress()
+                Display message "Progress saved successfully."
+            case "Journal":
+                openMoodJournal()
+            case "Logout":
+                saveDailyProgress()
+                logout()
+                continueProgram = False
+            case _:
+                display error message
+
+
+# Double check for later
+trackMood()
+    Prompt user to enter mood on a scale of 1-5
+    If valid, store mood entry with timestamp
+    Display confirmation "Mood logged successfully."
+    display mood jounral option button
+
+trackFood()
+    Prompt user to select food groups consumed (Protein, Carbs, Greens, Calcium)
+    If valid, store food entry with timestamp
+    Display confirmation "Food intake logged successfully."
+
+trackWater()
+    Prompt user to enter water intake in liters
+    If input >= 2.7 liters, mark water goal as achieved
+    Store water entry with timestamp
+    Display confirmation "Water intake logged successfully."
+
+trackSleep()
+    Prompt user to enter hours of sleep (0-10 hours)
+    If input is between 6 and 8 hours, mark sleep goal as achieved
+    Store sleep entry with timestamp
+    Display confirmation "Sleep logged successfully."
+
+trackExercise()
+    Prompt user to select exercise type (Cardio, Yoga, Weights, Sports/Recreation, Walking)
+    Prompt user to enter exercise duration in minutes
+    If duration >= 30, mark exercise goal as achieved
+    Store exercise entry with timestamp
+    Display confirmation "Good job! Exercise was logged."
+
+openMoodJournal()
+    Prompt user to enter a journal entry
+    Validate entry (ensure it’s not empty)
+    If valid, store journal entry with timestamp
+    Display confirmation "Journal entry saved successfully."
+
+showProgressChart()
+    Calculate progress based on entries (Mood, Food, Water, Sleep, Exercise)
+    Generate and display bar chart with progress towards daily goals
+    Generate a tip based on the score for the week
+
+saveDailyProgress()
+    Save all daily entries (Mood, Food, Water, Sleep, Exercise) to local storage
+    Display message "Daily progress saved successfully."
+
+logout()
+    Clear user session data
+    Display logout confirmation message "You have successfully logged out."
+
+End HeadSynk
+'''
