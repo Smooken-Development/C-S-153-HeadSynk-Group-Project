@@ -99,3 +99,24 @@ logout()
 
 End HeadSynk
 '''
+// Jason time stamp and mood code
+from datetime import datetime
+
+# Function to get current date and time
+def get_current_datetime():
+    return datetime.now()
+
+# Function to log data entry with timestamp
+def log_data_entry(data):
+    timestamp = get_current_datetime()
+    with open("data_log.txt", "a") as file:
+        file.write(f"{timestamp}: {data}\n")
+    print(f"Data logged at {timestamp}")
+
+mood = int(input("Rate your level of joy today on a scale of 1-5: "))
+log_data_entry(mood)
+
+if (mood > 5 or mood < 1):
+    print("Invalid entry")
+else: print("Mood Logged Successfully.")
+// Property of edge
