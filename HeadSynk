@@ -1,5 +1,5 @@
 '''
-Start HeadSynk
+Start Pseudo Code
 
 doLogIn()
     goodLogin = False
@@ -106,5 +106,117 @@ logout()
     Clear user session data
     Display logout confirmation message "You have successfully logged out."
 
-End HeadSynk
+End Pseudo Code
 '''
+
+
+#_Start_HeadSynk_______________________________________________
+
+# Side Notes:
+#   We might need to make a user class, so that we can populate things when the user wants them
+# or, we can just load the sections after they click on them for more complex stuff (i.e analytics)
+
+# Starts the program with a user login
+def doLogIn():
+    # FINISH ME:
+    print("TEST: Login Successful!")
+    print("TEST: Data Loaded Successfullly!")
+    pass
+
+
+# The main dashboard menu/window loop
+def displayDashboard():
+    continueProgram = True
+
+    while continueProgram == True:
+        # DELETE ME: This print function will be changed to a window loop
+        print("""Please input an option:
+              1) Mood Tracker
+              2) Food Tracker
+              3) Water Tracker
+              4) Sleep Tracker
+              5) Exercise Tracker
+              6) See Analytics
+              7) Save Daily Progress
+              8) Journal
+              0) Log Out
+              """)
+        
+        buttonInput = input("Input: ") # DELETE ME: This will change to a button input
+        match buttonInput:
+            case "1":   # Mood
+                trackFood()
+            case "2":   # Food
+                trackFood()
+            case "3":   # Water
+                trackWater()
+            case "4":   # Sleep
+                trackSleep()
+            case "5":   # Exercise
+                trackExercise()
+            case "6":   # Analytics Window
+                displayAnalyticsWindow()
+            case "7":   # Save Function
+                saveDailyProgress()
+            case "8":   # Journal
+                openMoodJournal()
+            case "0":   # Log Out
+                saveDailyProgress()
+                continueProgram = logout()
+            case _:     # Default case
+                # FINISH ME:
+                # In development part 2, turn this into a pop up window.
+                print("An error has occured. Please Try again.")
+
+    print("Goodbye!")
+
+
+def trackMood():
+    # FINISH ME:
+    print("TEST: Mood Tracked!")
+    pass
+
+def trackFood():
+    # FINISH ME:
+    print("TEST: Food Tracked!")
+    pass
+
+def trackWater():
+    # FINISH ME:
+    print("TEST: Water Intake Tracked!")
+    pass
+
+def trackSleep():
+    # FINISH ME:
+    print("TEST: Sleep Tracked!")
+    pass
+
+def trackExercise():
+    # FINISH ME:
+    print("TEST: Exercise Tracked!")
+    pass
+
+def displayAnalyticsWindow():
+    # FINISH ME:
+    print("TEST: Analytics Window...")
+    pass
+
+def openMoodJournal():
+    # FINISH ME:
+    print("TEST: Journal...")
+    pass
+
+def saveDailyProgress():
+    # FINISH ME:
+    print("TEST: Progress Saved!")
+    pass
+
+def logout():
+    # FINISH ME:
+    print("TEST: Logging out...")
+    return False
+
+# main "function" basically
+if __name__ == "__main__":
+    doLogIn()
+    displayDashboard()
