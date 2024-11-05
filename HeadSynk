@@ -83,6 +83,12 @@ openMoodJournal()
     Validate entry (ensure it’s not empty)
     If valid, store journal entry with timestamp
     Display confirmation "Journal entry saved successfully."
+#still work in progress
+ent=input("input a jounal entry")
+if not ent:
+    print("Input is empty")
+else:
+    print("Journal entry saved successfully.")
 
 showProgressChart()
     Calculate progress based on entries (Mood, Food, Water, Sleep, Exercise)
