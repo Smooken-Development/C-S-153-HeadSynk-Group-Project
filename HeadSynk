@@ -64,7 +64,16 @@ trackWater()
     If input >= 2.7 liters, mark water goal as achieved
     Store water entry with timestamp
     Display confirmation "Water intake logged successfully."
-
+#__William's__Water_tracker_____________________________________________________#
+# still work in progress
+water=float(input("aproximatly how many liters of water have you drank today"))
+if water > 2.7:
+  print("You have drunk the required amount for today")
+elif water < 2.7:
+    print("drink some more water")
+else:
+  print("You have drunk the required amount for today")
+#_______________________________________________________________________________#
 trackSleep()
     Prompt user to enter hours of sleep (0-10 hours)
     If input is between 6 and 8 hours, mark sleep goal as achieved
