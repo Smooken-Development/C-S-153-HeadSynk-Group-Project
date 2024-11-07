@@ -1,0 +1,237 @@
+# C S 153 - Python Programming
+# Documentation for Custom Tikinter:  https://customtkinter.tomschimansky.com/documentation/
+
+import customtkinter as ctk     # If you get a crash error, please make sure that you're on Python 3.11 and have installed
+                                # In your command prompt put in: pip install customtkinter
+
+'''
+Start Pseudo Code
+
+doLogIn()
+    goodLogin = False
+    while (!goodLogin)
+
+        Prompt user for username and password
+        if username && password == good
+            goodLogin = True
+            break
+        else
+            display error box
+
+displayDashBoard()
+    display tracker buttons (mood, food, water, sleep, exercise)
+    display timeline switch buttons
+    display bar graph for percentage of daily goals met
+    display mood journal option
+    display analytics button
+    display saveButton
+
+    while continueProgram == True
+        match buttonInput
+            case "Mood":
+                trackMood()
+            case "Food":
+                trackFood()
+            case "Water":
+                trackWater()
+            case "Sleep":
+                trackSleep()
+            case "Exercise":
+                trackExercise()
+            case "Analytics":
+                displayAnalyticsWindow()
+            case "Save":
+                saveDailyProgress()
+                Display message "Progress saved successfully."
+            case "Journal":
+                openMoodJournal()
+            case "Logout":
+                saveDailyProgress()
+                logout()
+                continueProgram = False
+            case _:
+                display error message
+
+
+# Double check for later
+trackMood()
+    Prompt user to enter mood on a scale of 1-5
+    If valid, store mood entry with timestamp
+    Display confirmation "Mood logged successfully."
+    display mood jounral option button
+
+trackFood()
+    Prompt user to select food groups consumed (Protein, Carbs, Greens, Calcium)
+    If valid, store food entry with timestamp
+    Display confirmation "Food intake logged successfully."
+
+trackWater()
+    Prompt user to enter water intake in liters
+    If input >= 2.7 liters, mark water goal as achieved
+    Store water entry with timestamp
+    Display confirmation "Water intake logged successfully."
+
+trackSleep()
+    Prompt user to enter hours of sleep (0-10 hours)
+    If input is between 6 and 8 hours, mark sleep goal as achieved
+    Store sleep entry with timestamp
+    Display confirmation "Sleep logged successfully."
+
+trackExercise()
+    Prompt user to select exercise type (Cardio, Yoga, Weights, Sports/Recreation, Walking)
+    Prompt user to enter exercise duration in minutes
+    If duration >= 30, mark exercise goal as achieved
+    Store exercise entry with timestamp
+    Display confirmation "Good job! Exercise was logged."
+
+openMoodJournal()
+    Prompt user to enter a journal entry
+    Validate entry (ensure it’s not empty)
+    If valid, store journal entry with timestamp
+    Display confirmation "Journal entry saved successfully."
+
+#___William's_openMoodJournal()________________________________
+# still work in progress
+ent=input("input a jounal entry")
+if not ent:
+    print("Input is empty")
+else:
+    print("Journal entry saved successfully.")
+#______________________________________________________________
+
+showProgressChart()
+    Calculate progress based on entries (Mood, Food, Water, Sleep, Exercise)
+    Generate and display bar chart with progress towards daily goals
+    Generate a tip based on the score for the week
+
+saveDailyProgress()
+    Save all daily entries (Mood, Food, Water, Sleep, Exercise) to local storage
+    Display message "Daily progress saved successfully."
+
+logout()
+    Clear user session data
+    Display logout confirmation message "You have successfully logged out."
+
+End Pseudo Code
+'''
+
+
+
+
+#_Start_HeadSynk_______________________________________________
+
+# Side Notes:
+#   We might need to make a user class, so that we can populate things when the user wants them
+# or, we can just load the sections after they click on them for more complex stuff (i.e analytics)
+
+# Starts the program with a user login
+def doLogIn():
+    # FINISH ME:
+    print("TEST: Login Successful!")
+    print("TEST: Data Loaded Successfullly!")
+    pass
+
+
+# The main dashboard menu/window loop
+def displayDashboard():
+    continueProgram = True
+
+    while continueProgram == True:
+        # DELETE ME: This print function will be changed to a window loop
+        print("""Please input an option:
+              1) Mood Tracker
+              2) Food Tracker
+              3) Water Tracker
+              4) Sleep Tracker
+              5) Exercise Tracker
+              6) See Analytics
+              7) Save Daily Progress
+              8) Journal
+              0) Log Out
+              """)
+        
+        buttonInput = input("Input: ") # DELETE ME: This will change to a button input
+        match buttonInput:
+            case "1":   # Mood
+                trackFood()
+            case "2":   # Food
+                trackFood()
+            case "3":   # Water
+                trackWater()
+            case "4":   # Sleep
+                trackSleep()
+            case "5":   # Exercise
+                trackExercise()
+            case "6":   # Analytics Window
+                displayAnalyticsWindow()
+            case "7":   # Save Function
+                saveDailyProgress()
+            case "8":   # Journal
+                openMoodJournal()
+            case "0":   # Log Out
+                saveDailyProgress()
+                continueProgram = logout()
+            case _:     # Default case
+                # FINISH ME:
+                # In development part 2, turn this into a pop up window.
+                print("An error has occured. Please Try again.")
+
+    print("Goodbye!")
+
+
+def trackMood():
+    # FINISH ME:
+    print("TEST: Mood Tracked!")
+    pass
+
+def trackFood():
+    # FINISH ME:
+    print("TEST: Food Tracked!")
+    pass
+
+def trackWater():
+    # FINISH ME:
+    print("TEST: Water Intake Tracked!")
+    pass
+
+def trackSleep():
+    # FINISH ME:
+    print("TEST: Sleep Tracked!")
+    pass
+
+def trackExercise():
+    # FINISH ME:
+    """
+    Prompt user to select exercise type (Cardio, Yoga, Weights, Sports/Recreation, Walking)
+    Prompt user to enter exercise duration in minutes
+    If duration >= 30, mark exercise goal as achieved
+    Store exercise entry with timestamp
+    Display confirmation "Good job! Exercise was logged.
+    """
+    print("TEST: Exercise Tracked!")
+    pass
+
+def displayAnalyticsWindow():
+    # FINISH ME:
+    print("TEST: Analytics Window...")
+    pass
+
+def openMoodJournal():
+    # FINISH ME:
+    print("TEST: Journal...")
+    pass
+
+def saveDailyProgress():
+    # FINISH ME:
+    print("TEST: Progress Saved!")
+    pass
+
+def logout():
+    # FINISH ME:
+    print("TEST: Logging out...")
+    return False
+
+# main "function" basically
+if __name__ == "__main__":
+    doLogIn()
+    displayDashboard()
