@@ -1,11 +1,10 @@
 # C S 153 - Python Programming
 # Documentation for Custom Tikinter:  https://customtkinter.tomschimansky.com/documentation/
 
-
-import datetime
+import os
+import datetime # for data entries
 import customtkinter as ctk     # If you get a crash error, please make sure that you're on Python 3.11 and have installed
-                                # In your command prompt put in: pip install customtkinter. If you're struggling, ask Zac
-                                # or comment out line 6
+                                # In your command prompt put in: pip install customtkinter
 
 '''
 Start Pseudo Code
@@ -132,9 +131,6 @@ logout()
 End Pseudo Code
 '''
 
-
-
-
 #_Start_HeadSynk_______________________________________________
 
 # Side Notes:
@@ -143,13 +139,57 @@ End Pseudo Code
 
 # Starts the program with a user login
 def doLogIn():
-    # FINISH ME:
-    print("TEST: Login Successful!")
-    print("TEST: Data Loaded Successfullly!")
-    pass
+    return  # DELETE ME: Remove when doLogIn() is complete
+    logFile = "login.txt"
+    regFile = "register.txt"
+    
+    def write_file(name):
+        try:
+            with open(name, 'w') as f:
+                user = input("Enter username: ")
+                pw = input("Enter password: ")
+                f.write(f"{user}\n{pw}")                                   #writes username & password to file
+    
+        except IOError:
+            print("Permission denied")
+        except Exception as e:
+            print(f"Error: {e}")
+    
+    
+    def read_file(name):
+        try:
+            with open(name, 'r') as f:
+                return f.read().strip().split('\n')  			#reads each line separate, returns a list
+    
+        except FileNotFoundError:
+            print(f"File {name} not found")
+        except IOError:
+            print(f"You don't have permission to read {name}")
+        except Exception as e:
+            print(f"Error: {e}")
+        return None
+    
+    def check_info(log, reg):
+        return log== reg
+    
+    # Main loop
+    logged_in = False
+    while not logged_in:
+        write_file(logFile)
+        log_info = read_file(logFile)
+        reg_info = read_file(regFile)
+        if log_info and reg_info:
+            if check_info(log_info, reg_info):
+                logged_in = True
+                print("Login successful")
+            else:
+                print("Wrong info")
+        else:
+            print("access denied")
 
 
 # The main dashboard menu/window loop
+# Start Dashboard Loop
 def displayDashboard():
     continueProgram = True
 
@@ -194,22 +234,48 @@ def displayDashboard():
                 print("An error has occured. Please Try again.")
 
     print("Goodbye!")
-
+# End Dashboard Loop
 
 def trackMood():
     # FINISH ME:
     print("TEST: Mood Tracked!")
     pass
 
+# Start Track Food
+#__Raena's__Food_tracker_________________________________________
 def trackFood():
-    # FINISH ME:
-    print("TEST: Food Tracked!")
-    pass
+    def array_operations(food_list):
+        for item in food_list:
+            print("Food item:", item)
+    
+    foods = ['carrots', 'yogurt', 'broccoli', 'eggs', 'avocado', 'berries', 'nuts', 'oatmeal']
+    array_operations(foods)
 
+    # If valid, store food entry with timestamp
+    # Display confirmation "Food intake logged successfully."
+    ''' # Zac: Idea for timestamp
+    foodEntry = {
+        "foods": foods,
+        "timeStamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    }
+    '''
+# End Track Food
+#_______________________________________________________________
+
+#__William's__Water_tracker____________________________________
+# Zac: You might want to make it so that the data can be logged. All functionality will be
+#  moved to buttons in Development Part 2. See trackExercise() for how to track data
 def trackWater():
     # FINISH ME:
-    print("TEST: Water Intake Tracked!")
-    pass
+    # still work in progress
+    water=float(input("aproximatly how many liters of water have you drank today"))
+    if water > 2.7:
+        print("You have drunk the required amount for today")
+    elif water < 2.7:
+        print("drink some more water")
+    else:
+        print("You have drunk the required amount for today")
+#_______________________________________________________________
 
 def trackSleep():
     # FINISH ME:
@@ -218,15 +284,6 @@ def trackSleep():
 
 # Start Track Exercise
 def trackExercise():
-    # FINISH ME:
-    """
-    Prompt user to select exercise type (Cardio, Yoga, Weights, Sports/Recreation, Walking)
-    Prompt user to enter exercise duration in minutes
-    If duration >= 30, mark exercise goal as achieved
-    Store exercise entry with timestamp
-    Display confirmation "Good job! Exercise was logged.
-    """
-
     # DELETE ME: Temporary Menu until UI is implemented
     choice = int(input("""
     Slect the type of exercise:
@@ -256,7 +313,7 @@ def trackExercise():
     # Get timestamp for entry
     timeStamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # Create entry based off of data
+    # Create entry based off of data using a dictionary
     exerciseEntry = {
         "exerciseType": exerciseTypes[choice],
         "duration": duration,
@@ -272,10 +329,18 @@ def displayAnalyticsWindow():
     print("TEST: Analytics Window...")
     pass
 
+#___William's_openMoodJournal()________________________________
+# Zac: You might want to make it so that the data can be logged. All functionality will be
+#  moved to buttons in Development Part 2. See trackExercise() for how to track data
 def openMoodJournal():
-    # FINISH ME:
-    print("TEST: Journal...")
-    pass
+    #FINISH ME:
+    # still work in progress
+    ent = input("Input a journal entry")
+    if not ent:
+        print("Input is empty")
+    else:
+        print("Journal entry saved successfully.")
+#______________________________________________________________
 
 def saveDailyProgress():
     # FINISH ME:
