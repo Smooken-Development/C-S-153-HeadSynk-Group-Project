@@ -1,3 +1,12 @@
+# C S 153 - Python Programming
+# Documentation for Custom Tikinter:  https://customtkinter.tomschimansky.com/documentation/
+
+
+import datetime
+import customtkinter as ctk     # If you get a crash error, please make sure that you're on Python 3.11 and have installed
+                                # In your command prompt put in: pip install customtkinter. If you're struggling, ask Zac
+                                # or comment out line 6
+
 '''
 Start Pseudo Code
 
@@ -124,6 +133,8 @@ End Pseudo Code
 '''
 
 
+
+
 #_Start_HeadSynk_______________________________________________
 
 # Side Notes:
@@ -205,10 +216,56 @@ def trackSleep():
     print("TEST: Sleep Tracked!")
     pass
 
+# Start Track Exercise
 def trackExercise():
     # FINISH ME:
-    print("TEST: Exercise Tracked!")
-    pass
+    """
+    Prompt user to select exercise type (Cardio, Yoga, Weights, Sports/Recreation, Walking)
+    Prompt user to enter exercise duration in minutes
+    If duration >= 30, mark exercise goal as achieved
+    Store exercise entry with timestamp
+    Display confirmation "Good job! Exercise was logged.
+    """
+
+    # DELETE ME: Temporary Menu until UI is implemented
+    choice = int(input("""
+    Slect the type of exercise:
+    1) Cardio
+    2) Yoga
+    3) Weights
+    4) Sports/Recreation
+    5) Walking
+    
+    Please enter a choice: """))
+    exerciseTypes = {1: "Cardio", 2: "Yoga", 3: "Weights", 4: "Sports/Recreation", 5: "Walking"}   # Creates a Dictionary to relate choice to exercise
+    
+    # Get duration from user input
+    try:
+        duration = int(input(f"Please enter a minute amount for the duration of {exerciseTypes[choice]} completed: "))
+    except ValueError:
+        # FINISH ME: Add an error window
+        print("Invalid Input. Please enter amount of minutes for duration")
+        return
+
+    # Get duration for entry
+    if duration >= 30:
+        goalAchieved = True
+    else:
+        goalAchieved = False
+
+    # Get timestamp for entry
+    timeStamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # Create entry based off of data
+    exerciseEntry = {
+        "exerciseType": exerciseTypes[choice],
+        "duration": duration,
+        "goalAchieved": goalAchieved,
+        "timeStamp": timeStamp
+    }
+
+    print(f"Good job! Exercise was logged: {exerciseEntry}")
+# End of Track Exercise
 
 def displayAnalyticsWindow():
     # FINISH ME:
