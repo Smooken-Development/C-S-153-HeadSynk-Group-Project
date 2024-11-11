@@ -7,7 +7,7 @@ import customtkinter as ctk     # If you get a crash error, please make sure tha
                                 # In your command prompt put in: pip install customtkinter
 
 '''
-#___Shabhan's__Logout()_________________________________
+#___Shabhan's__Login()_________________________________
 logFile = "login.txt"
 regFile = "register.txt"
  
@@ -388,6 +388,20 @@ def logout():
     # FINISH ME:
     print("TEST: Logging out...")
     return False
+#___Shabhan's__Logout()_________________________________
+        if choice == '3':
+            logout()
+def logout():
+    try:                                                                         
+        with open(log_file, 'w') as f:                                 # write mode, which clears its contents
+            pass                                                              # just clear the file
+        print("Logged out successfully.")
+    except IOError:
+        print("Permission denied ")
+    except Exception as e:
+        print(f"Error : {e}")
+    
+#_______________________________________________________#
 
 # main "function" basically
 if __name__ == "__main__":
