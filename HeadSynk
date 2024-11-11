@@ -7,18 +7,55 @@ import customtkinter as ctk     # If you get a crash error, please make sure tha
                                 # In your command prompt put in: pip install customtkinter
 
 '''
-Start Pseudo Code
-
-doLogIn()
-    goodLogin = False
-    while (!goodLogin)
-
-        Prompt user for username and password
-        if username && password == good
-            goodLogin = True
-            break
-        else
-            display error box
+#___Shabhan's__Logout()_________________________________
+logFile = "login.txt"
+regFile = "register.txt"
+ 
+def write_file(name):
+    try:
+        with open(name, 'w') as f:
+            user = input("Enter username: ")
+            pw = input("Enter password: ")
+            f.write(f"{user}\n{pw}")                                   #writes username & password to file
+ 
+    except IOError:
+        print("Permission denied")
+    except Exception as e:
+        print(f"Error: {e}")
+ 
+ 
+def read_file(name):
+    try:
+        with open(name, 'r') as f:
+            return f.read().strip().split('\n')  			            #reads each line separate, returns a list
+ 
+    except FileNotFoundError:
+        print(f"File {filename} not found")
+    except IOError:
+        print(f"You don't have permission to read {filename}")
+    except Exception as e:
+        print(f"Error: {e}")
+    return None
+ 
+def check_info(log, reg):
+    return log== reg
+ 
+# Main loop
+logged_in = False
+while not logged_in:
+    write_file(log_file)
+    log_info = read_file(logFile)
+    reg_info = read_file(regFile)
+    
+    if log_info and reg_info:
+        if check_info(log_info, reg_info):
+            logged_in = True
+            print("Login successful")
+        else:
+            print("Wrong info")
+    else:
+        print("enter login")
+#_______________________________________________________#
 
 displayDashBoard()
     display tracker buttons (mood, food, water, sleep, exercise)
