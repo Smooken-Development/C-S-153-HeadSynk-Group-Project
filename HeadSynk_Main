@@ -317,6 +317,7 @@ def trackWater():
 
     # Create entry based off of data using a dictionary
         "water_amount": water_amount,
+        "GoalAchieved": GoalAchieved,
         "timeStamp": timeStamp
 #_______________________________________________________________
 
