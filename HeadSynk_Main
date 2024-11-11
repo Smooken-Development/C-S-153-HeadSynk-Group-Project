@@ -305,13 +305,19 @@ def trackFood():
 def trackWater():
     # FINISH ME:
     # still work in progress
-    water=float(input("aproximatly how many liters of water have you drank today"))
-    if water > 2.7:
+    water_amount=float(input("aproximatly how many liters of water have you drank today"))
+    if water_amount > 2.7:
         print("You have drunk the required amount for today")
-    elif water < 2.7:
+    elif water_amount < 2.7:
         print("drink some more water")
     else:
         print("You have drunk the required amount for today")
+# Get timestamp for entry
+    timeStamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # Create entry based off of data using a dictionary
+        "water_amount": water_amount,
+        "timeStamp": timeStamp
 #_______________________________________________________________
 
 def trackSleep():
