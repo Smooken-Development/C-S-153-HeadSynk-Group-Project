@@ -274,9 +274,20 @@ def displayDashboard():
 # End Dashboard Loop
 
 def trackMood():
-    # FINISH ME:
-    print("TEST: Mood Tracked!")
-    pass
+    mood_track=int(input("On a scale of 1-5 how well are you feeling today 1 being bad 5 being realy good."))
+    if mood_track > 5:
+        print("That is not on the scale")
+    elif mood_track < 3:
+        print("Things will get better")
+    else:
+        print("Thats great.")
+# Get timestamp for entry
+    timeStamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # Create entry based off of data using a dictionary
+        "mood_track": mood_track,
+        "GoalAchieved": GoalAchieved,
+        "timeStamp": timeStamp
 
 # Start Track Food
 #__Raena's__Food_tracker_________________________________________
