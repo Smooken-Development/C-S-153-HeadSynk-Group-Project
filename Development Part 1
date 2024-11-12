@@ -5,7 +5,7 @@ trackExercise() # Zac
 
 trackSleep() # Raena
 trackFood() # Raena
-trackMood() # Jason
+trackMood() # Jason - Switched to William
 trackWater() # William
 
 
@@ -15,5 +15,5 @@ doLogIn() # Shabhan
 logout()  # Shabhan
 
 Priority 3
-openMoodJournal() # William
+openMoodJournal() # William - Switched to Zac
 saveDailyProgress() # Zac
