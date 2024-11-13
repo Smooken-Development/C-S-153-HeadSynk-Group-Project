@@ -444,7 +444,7 @@ def showErrorPopup(errorMessage):
     closeButton = ctk.CTkButton(errorWindow, text="Dismiss", command=errorWindow.destroy)
     closeButton.pack(pady=10)
     
-    errorWindow.mainloop()
+    errorWindow.wait_window()
 # End Error Window
 
 # main "function" basically
