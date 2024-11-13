@@ -430,6 +430,23 @@ def logout():
     
 #_______________________________________________________#
 
+# Start Error Window
+def showErrorPopup(errorMessage):
+    
+    errorWindow = ctk.CTkToplevel() # FIX ME: put in the main window varibale name here
+    errorWindow.title("Error")
+    errorWindow.geometry("250x120")
+    errorWindow.grab_set()
+
+    label = ctk.CTkLabel(errorWindow, text=f"⚠️{errorMessage}", wraplength=250, font=("Aptos", 12), text_color="red")
+    label.pack(pady=20)
+
+    closeButton = ctk.CTkButton(errorWindow, text="Dismiss", command=errorWindow.destroy)
+    closeButton.pack(pady=10)
+    
+    errorWindow.mainloop()
+# End Error Window
+
 # main "function" basically
 if __name__ == "__main__":
     doLogIn()
