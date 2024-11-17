@@ -6,6 +6,19 @@ import datetime # for data entries
 import customtkinter as ctk     # If you get a crash error, please make sure that you're on Python 3.11 and have installed
                                 # In your command prompt put in: pip install customtkinter
 
+# initalize global variables to grab information from the functions
+# pull the timestamp out of the functions so that everything saves in one format
+# log the time stamp when program is terminated/logged out
+
+moodEntry = {}
+foodEntry = {}
+waterEntry = {}
+sleepEntry = {}
+exerciseEntry = {}
+journalEntry = {}
+entryTimestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
 '''
 #___Shabhan's__Login()_________________________________
 logFile = "login.txt"
@@ -257,7 +270,7 @@ def displayDashboard():
             case "5":   # Exercise
                 trackExercise()
             case "6":   # Analytics Window
-                doBadge()
+                doBadgeSystem()
             case "7":   # Save Function
                 saveDailyProgress()
             case "8":   # Journal
@@ -331,6 +344,8 @@ def trackWater():
     # Get timestamp for entry
     timeStamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+
+    global waterEntry
     # Create entry based off of data using a dictionary
     waterEntry = {
         "waterAmount": waterAmount,
@@ -339,16 +354,48 @@ def trackWater():
     }
 # End Water Tracker
 
-#__Raena's__Sleep_tracker_______________________________________
+# Start Track Sleep
 def trackSleep():
-    # FINISH ME:
-    # Get user input between 0 - 10 of sleep
-    # If input is between 6 & 9 hours of sleep, goalAchieved = True
-    # Make a timestamp
-    # Store entry in a dictionary titled "sleepEntry = {}""
-    print("TEST: Sleep Tracked!")   # DELETE ME:
-    pass
-#_______________________________________________________________
+    def saveSleep():
+        # gets sleep hours 
+        global sleepEntry
+        sliderValue = int(slider.get())
+
+        # if sleep is greater than 7, then the goal has been achieved
+        if sliderValue > 7:
+            goalAchieved = True
+        else:
+            goalAchieved = False
+
+        # Saves it to the sleepEntry dictionary
+        sleepEntry = {"sleepAmount": sliderValue, "goalAchieved":goalAchieved}
+        sleepWindow.destroy()
+
+    def updateLabel():  # This is to make the number pop below the slider
+        currentValue = int(slider.get())
+        if currentValue > 9:
+            sliderValueLabel.configure(text="SleepHours: 9+")
+        else:
+            sliderValueLabel.configure(text=f"SleepHours: {currentValue}")
+
+    sleepWindow = ctk.CTkToplevel()
+    sleepWindow.title("Sleep Tracker")
+    sleepWindow.geometry("600x400")
+
+    label = ctk.CTkLabel(sleepWindow, text="How many hours did you sleep last night?", font=("Aptos", 16))
+    label.pack(side="top", pady = 20)
+
+    slider = ctk.CTkSlider(sleepWindow, from_=0, to=10, number_of_steps=10, command=lambda x: updateLabel())
+    slider.pack(pady=20)
+
+    sliderValueLabel = ctk.CTkLabel(sleepWindow, text="SleepHours: 5", font=("Aptos", 14))
+    sliderValueLabel.pack()
+
+    saveButton = ctk.CTkButton(sleepWindow, text="Confirm", command=saveSleep)
+    saveButton.pack(pady=20)
+
+    sleepWindow.wait_window()
+# End Track Sleep
 
 # Start Track Exercise
 def trackExercise():
@@ -362,6 +409,9 @@ def trackExercise():
     5) Walking
     
     Please enter a choice: """))
+
+    global exerciseEntry
+
     exerciseTypes = {1: "Cardio", 2: "Yoga", 3: "Weights", 4: "Sports/Recreation", 5: "Walking"}   # Creates a Dictionary to relate choice to exercise
     
     # Get duration from user input
@@ -369,7 +419,7 @@ def trackExercise():
         duration = int(input(f"Please enter a minute amount for the duration of {exerciseTypes[choice]} completed: "))
     except ValueError:
         # FINISH ME: Add an error window
-        print("Invalid Input. Please enter amount of minutes for duration")
+        showErrorPopup("Invalid Input. Please enter amount of minutes for duration")
         return
 
     # Get duration for entry
@@ -399,18 +449,34 @@ def doBadgeSystem():
     pass
 #_______________________________________________________________
 
-#___Zac's_openMoodJournal()_____________________________________
-# Zac: You might want to make it so that the data can be logged. All functionality will be
-#  moved to buttons in Development Part 2. See trackExercise() for how to track data
+# Start Mood Journal
 def openMoodJournal():
-    #FINISH ME:
-    # still work in progress
-    ent = input("Input a journal entry")
-    if not ent:
-        print("Input is empty")
-    else:
-        print("Journal entry saved successfully.")
-#______________________________________________________________
+    def saveEntry():
+        global journalEntry
+        # dictionary to stay consistent
+        journalEntry = {"journalEntry": textBox.get("1.0", "end-1c")}   # 1.0 gets the textBox entry at column 1,
+                                                                        # row 1. end-1c removes any lines after the last character
+        journalWindow.destroy()
+
+    # Create a new window
+    journalWindow = ctk.CTkToplevel()
+    journalWindow.title("Mood Journal")
+    journalWindow.geometry("600x400")
+
+    # Add a label to the top of the window
+    label = ctk.CTkLabel(journalWindow, text="Please write anything you'd like to remember from today!\nPlease make sure to press 'save' before exiting.", font=("Aptos", 16))
+    label.pack(side="top", pady = 20)
+
+    # Add a text box for multi-line input
+    textBox = ctk.CTkTextbox(journalWindow, width=380, height=200)
+    textBox.pack(pady=10)
+
+    # Add a save button
+    saveButton = ctk.CTkButton(journalWindow, text="Save", command=saveEntry)
+    saveButton.pack(pady=10)
+
+    journalWindow.wait_window()
+# End Mood Journal
 
 def saveDailyProgress():
     # FINISH ME:
@@ -434,7 +500,7 @@ def logout():
 def showErrorPopup(errorMessage):
     
     errorWindow = ctk.CTkToplevel() # FIX ME: put in the main window varibale name here
-    errorWindow.title("Error")
+    errorWindow.title("⚠️ Error")
     errorWindow.geometry("250x120")
     errorWindow.grab_set()
 
@@ -451,3 +517,9 @@ def showErrorPopup(errorMessage):
 if __name__ == "__main__":
     doLogIn()
     displayDashboard()
+    print(exerciseEntry)
+    print(foodEntry)
+    print(sleepEntry)
+    print(moodEntry)
+    print(waterEntry)
+    print(journalEntry)
