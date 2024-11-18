@@ -3,183 +3,22 @@
 
 import os
 import datetime # for data entries
-import customtkinter as ctk     # If you get a crash error, please make sure that you're on Python 3.11 and have installed
-                                # In your command prompt put in: pip install customtkinter
+import json # For saving data
+import customtkinter as ctk # For UI
 
-# initalize global variables to grab information from the functions
-# pull the timestamp out of the functions so that everything saves in one format
-# log the time stamp when program is terminated/logged out
+# TODO
+# - make all function display a helpful message
+# - make all user interactable functions happen in CTK windows
+# - make all popup windows disappear after a few seconds
 
+userData = {}
 moodEntry = {}
 foodEntry = {}
 waterEntry = {}
 sleepEntry = {}
 exerciseEntry = {}
 journalEntry = {}
-entryTimestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-
-'''
-#___Shabhan's__Login()_________________________________
-logFile = "login.txt"
-regFile = "register.txt"
- 
-def write_file(name):
-    try:
-        with open(name, 'w') as f:
-            user = input("Enter username: ")
-            pw = input("Enter password: ")
-            f.write(f"{user}\n{pw}")                                   #writes username & password to file
- 
-    except IOError:
-        print("Permission denied")
-    except Exception as e:
-        print(f"Error: {e}")
- 
- 
-def read_file(name):
-    try:
-        with open(name, 'r') as f:
-            return f.read().strip().split('\n')  			            #reads each line separate, returns a list
- 
-    except FileNotFoundError:
-        print(f"File {filename} not found")
-    except IOError:
-        print(f"You don't have permission to read {filename}")
-    except Exception as e:
-        print(f"Error: {e}")
-    return None
- 
-def check_info(log, reg):
-    return log== reg
- 
-# Main loop
-logged_in = False
-while not logged_in:
-    write_file(log_file)
-    log_info = read_file(logFile)
-    reg_info = read_file(regFile)
-    
-    if log_info and reg_info:
-        if check_info(log_info, reg_info):
-            logged_in = True
-            print("Login successful")
-        else:
-            print("Wrong info")
-    else:
-        print("enter login")
-#_______________________________________________________#
-
-displayDashBoard()
-    display tracker buttons (mood, food, water, sleep, exercise)
-    display timeline switch buttons
-    display bar graph for percentage of daily goals met
-    display mood journal option
-    display analytics button
-    display saveButton
-
-    while continueProgram == True
-        match buttonInput
-            case "Mood":
-                trackMood()
-            case "Food":
-                trackFood()
-            case "Water":
-                trackWater()
-            case "Sleep":
-                trackSleep()
-            case "Exercise":
-                trackExercise()
-            case "Analytics":
-                displayAnalyticsWindow()
-            case "Save":
-                saveDailyProgress()
-                Display message "Progress saved successfully."
-            case "Journal":
-                openMoodJournal()
-            case "Logout":
-                saveDailyProgress()
-                logout()
-                continueProgram = False
-            case _:
-                display error message
-
-
-# Double check for later
-trackMood()
-    Prompt user to enter mood on a scale of 1-5
-    If valid, store mood entry with timestamp
-    Display confirmation "Mood logged successfully."
-    display mood jounral option button
-
-trackFood()
-    def array_operations(food):
-    print("food:", foods)
-foods = ['carrots, yogurt, broccoli, eggs, avacado, berries, nuts, oatmeal']
-array_operations(foods)
-    # If valid, store food entry with timestamp
-    # Display confirmation "Food intake logged successfully."
-
-trackWater()
-    Prompt user to enter water intake in liters
-    If input >= 2.7 liters, mark water goal as achieved
-    Store water entry with timestamp
-    Display confirmation "Water intake logged successfully."
-
-
-#__William's__Water_tracker_____________________________________________________#
-# still work in progress
-water=float(input("aproximatly how many liters of water have you drank today"))
-if water > 2.7:
-  print("You have drunk the required amount for today")
-elif water < 2.7:
-    print("drink some more water")
-else:
-  print("You have drunk the required amount for today")
-#_______________________________________________________________________________#
-trackSleep()
-    Prompt user to enter hours of sleep (0-10 hours)
-    If input is between 6 and 8 hours, mark sleep goal as achieved
-    Store sleep entry with timestamp
-    Display confirmation "Sleep logged successfully."
-
-trackExercise()
-    Prompt user to select exercise type (Cardio, Yoga, Weights, Sports/Recreation, Walking)
-    Prompt user to enter exercise duration in minutes
-    If duration >= 30, mark exercise goal as achieved
-    Store exercise entry with timestamp
-    Display confirmation "Good job! Exercise was logged."
-
-openMoodJournal()
-    Prompt user to enter a journal entry
-    Validate entry (ensure it’s not empty)
-    If valid, store journal entry with timestamp
-    Display confirmation "Journal entry saved successfully."
-
-#___William's_openMoodJournal()________________________________
-# still work in progress
-ent=input("input a jounal entry")
-if not ent:
-    print("Input is empty")
-else:
-    print("Journal entry saved successfully.")
-#______________________________________________________________
-
-showProgressChart()
-    Calculate progress based on entries (Mood, Food, Water, Sleep, Exercise)
-    Generate and display bar chart with progress towards daily goals
-    Generate a tip based on the score for the week
-
-saveDailyProgress()
-    Save all daily entries (Mood, Food, Water, Sleep, Exercise) to local storage
-    Display message "Daily progress saved successfully."
-
-logout()
-    Clear user session data
-    Display logout confirmation message "You have successfully logged out."
-
-End Pseudo Code
-'''
+entryTimestamp = datetime.datetime.now().strftime("%Y-%m-%d")
 
 #_Start_HeadSynk_______________________________________________
 
@@ -240,119 +79,186 @@ def doLogIn():
 
 # The main dashboard menu/window loop
 # Start Dashboard Loop
+# The main dashboard menu/window loop
+# Start Dashboard Loop
 def displayDashboard():
-    continueProgram = True
+    dashboard = ctk.CTk()
+    dashboard.title("HeadSynk")
+    dashboard.geometry("600x400")
+    
+    # Button definitions with corrected commands
+    moodButton = ctk.CTkButton(dashboard, text="Mood Tracker", command=trackMood)
+    moodButton.pack(pady=5)
+    
+    foodButton = ctk.CTkButton(dashboard, text="Food Tracker", command=trackFood)
+    foodButton.pack(pady=5)
+    
+    waterButton = ctk.CTkButton(dashboard, text="Water Tracker", command=trackWater)
+    waterButton.pack(pady=5)
 
-    while continueProgram == True:
-        # DELETE ME: This print function will be changed to a window loop
-        print("""Please input an option:
-              1) Mood Tracker
-              2) Food Tracker
-              3) Water Tracker
-              4) Sleep Tracker
-              5) Exercise Tracker
-              6) See Analytics
-              7) Save Daily Progress
-              8) Journal
-              0) Log Out
-              """)
-        
-        buttonInput = input("Input: ") # FIX ME: This will change to a button input
-        match buttonInput:
-            case "1":   # Mood
-                trackMood()
-            case "2":   # Food
-                trackFood()
-            case "3":   # Water
-                trackWater()
-            case "4":   # Sleep
-                trackSleep()
-            case "5":   # Exercise
-                trackExercise()
-            case "6":   # Analytics Window
-                doBadgeSystem()
-            case "7":   # Save Function
-                saveDailyProgress()
-            case "8":   # Journal
-                openMoodJournal()
-            case "0":   # Log Out
-                saveDailyProgress()
-                continueProgram = logout()
-            case _:     # Default case
-                # FINISH ME:
-                # In development part 2, turn this into a pop up window.
-                print("An error has occured. Please Try again.")
+    sleepButton = ctk.CTkButton(dashboard, text="Sleep Tracker", command=trackSleep)
+    sleepButton.pack(pady=5)
+
+    exerciseButton = ctk.CTkButton(dashboard, text="Exercise Tracker", command=trackExercise)
+    exerciseButton.pack(pady=5)
+
+    badgeButton = ctk.CTkButton(dashboard, text="See Current Badge", command=doBadgeSystem)
+    badgeButton.pack(pady=5)
+
+    saveProgressButton = ctk.CTkButton(dashboard, text="Save Daily Progress", command=saveDailyProgress)
+    saveProgressButton.pack(pady=5)
+
+    journalButton = ctk.CTkButton(dashboard, text="Journal", command=openMoodJournal)
+    journalButton.pack(pady=5)
+
+    logoutButton = ctk.CTkButton(dashboard, text="Log Out", command=lambda: logout() or dashboard.quit())  # Logout and close the window
+    logoutButton.pack(pady=20)
+
+    # Start the window loop
+    dashboard.mainloop()
 
     print("Goodbye!")
 # End Dashboard Loop
 
 # Start trackMood
 def trackMood():
-    moodTrack=int(input("On a scale of 1-5 how well are you feeling today 1 being bad 5 being really good."))
-    if moodTrack > 5:
-        print("That is not on the scale")
-    elif moodTrack < 3:
-        print("Things will get better")
-        goalAchieved = True
-    else:
-        print("Thats great.")
-        goalAchieved = True
+    # Create Mood Tracker Window
+    moodWindow = ctk.CTkToplevel()
+    moodWindow.title("Mood Tracker")
+    moodWindow.geometry("600x400")
 
-    # Get timestamp for entry
-    timeStamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    def saveMood():
+        global moodEntry
+        moodTrack = int(moodSlider.get())
 
-    # Create entry based off of data using a dictionary
-    moodMood = {
-        "moodTracked": moodTrack,
-        "goalAchieved": goalAchieved,
-        "timeStamp": timeStamp
-    }
+        # Checking mood and updating goal status
+        if moodTrack > 5:
+            print("That is not on the scale")
+        elif moodTrack < 3:
+            print("Things will get better")
+            goalAchieved = True
+        else:
+            print("That's great.")
+            goalAchieved = True
+
+        # Create entry based off of data using a dictionary
+        moodEntry = {
+            "moodTracked": moodTrack,
+            "goalAchieved": goalAchieved
+        }
+
+        ctk.CTkLabel(moodWindow, text="Mood logged successfully!", fg_color="green").pack(pady=5)
+        moodWindow.after(2000, moodWindow.destroy)  # Close the window after 2 seconds
+
+    def updateMoodLabel():
+        currentMood = int(moodSlider.get())
+        moodValueLabel.configure(text=f"Mood: {currentMood}")
+
+    # Slider to track mood
+    moodSlider = ctk.CTkSlider(moodWindow, from_=1, to=5, number_of_steps=4, command=lambda x: updateMoodLabel())
+    moodSlider.pack(pady=20)
+
+    moodValueLabel = ctk.CTkLabel(moodWindow, text="Mood: 3", font=("Aptos", 14))
+    moodValueLabel.pack()
+
+    # Save Button
+    saveButton = ctk.CTkButton(moodWindow, text="Save", command=saveMood)
+    saveButton.pack(pady=20)
+
+    moodWindow.wait_window()
 # End trackMood
 
-# Start Track Food
-#__Raena's__Food_tracker_________________________________________
+# Start Food Tracker
 def trackFood():
-    # FINISH ME:
-    def array_operations(food_list):
-        for item in food_list:
-            print("Food item:", item)
-    
-    foods = ['carrots', 'yogurt', 'broccoli', 'eggs', 'avocado', 'berries', 'nuts', 'oatmeal']
-    array_operations(foods)
 
-    # If valid, store food entry with timestamp
-    # Display confirmation "Food intake logged successfully."
-    ''' # Zac: Idea for timestamp
-    foodEntry = {
-        "foods": foods,
-        "timeStamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    }
-    '''
-# End Track Food
-#_______________________________________________________________
+    # Initializes the foodWindow
+    foodWindow = ctk.CTkToplevel()
+    foodWindow.title("Food Tracker")
+    foodWindow.geometry("600x400")  # consistent window geometry
 
-# Start Water Tracker
+    # Food categories and variables to track checks
+    foods = ['Fruits', 'Vegetables', 'Grains', 'Protein', 'Dairy']
+    checkListDictionary = {food: ctk.BooleanVar() for food in foods}    # Creates a BooleanVar to track the state of a checkbox (True or False)
+                                                                        # Typically handles the states of widgets
+    # displays checklist
+    def checkListOptions():
+        global foodEntry
+
+        # Gets checked items
+        checkedItems = [food for food, var in checkListDictionary.items() if var.get()]
+        goalAchieved = len(checkedItems) == 5  # True if at least 5 groups are checked
+
+        # moves selected options to the global variable
+        foodEntry = {
+            "foods": checkedItems,
+            "goalAchieved": goalAchieved
+        }
+
+        # Confirms food logging
+        ctk.CTkLabel(foodWindow, text="Food groups logged successfully!", fg_color="green").pack(pady=5)
+        ctk.CTkLabel(foodWindow, text="Remember: Try to eat at least two meals with all of these daily!").pack(pady=5)
+        
+        # Closes popup window after some time
+        foodWindow.after(2000, foodWindow.destroy)
+
+    # Prompt to get food groups
+    ctk.CTkLabel(foodWindow, text="What food groups have you eaten today?").pack(pady=10)
+
+    # Generate checkboxes for each food group
+    for food in foods:
+        ctk.CTkCheckBox(foodWindow, text=food, variable=checkListDictionary[food]).pack(anchor="w", padx=20)
+
+    # Save button
+    ctk.CTkButton(foodWindow, text="Save", command=checkListOptions).pack(pady=20)
+
+    # keeps foodWindow popped up until closed
+    foodWindow.wait_window()
+# End Food Tracker
+
+# Start trackWater
 def trackWater():
-    waterAmount = float(input("Aproximatly how many liters of water have you drank today? (Enter your amount in liters): "))
-    if waterAmount > 2.7:
-        print("You have drank the required amount for today")
-        goalAchieved = True
-    else:
-        print("You should drink some more water")
-        goalAchieved = False
+    # Create Water Tracker Window
+    waterWindow = ctk.CTkToplevel()
+    waterWindow.title("Water Tracker")
+    waterWindow.geometry("600x400")
 
-    # Get timestamp for entry
-    timeStamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    def saveWater():
+        global waterEntry
+        waterAmount = float(waterSlider.get())
 
+        if waterAmount > 2.7:
+            print("You have drunk the required amount for today")
+            goalAchieved = True
+        else:
+            print("You should drink some more water")
+            goalAchieved = False
 
-    global waterEntry
-    # Create entry based off of data using a dictionary
-    waterEntry = {
-        "waterAmount": waterAmount,
-        "goalAchieved": goalAchieved,
-        "timeStamp": timeStamp
-    }
-# End Water Tracker
+        # Create entry based off of data using a dictionary
+        waterEntry = {
+            "waterAmount": waterAmount,
+            "goalAchieved": goalAchieved
+        }
+
+        ctk.CTkLabel(waterWindow, text="Water logged successfully!", fg_color="green").pack(pady=5)
+        waterWindow.after(2000, waterWindow.destroy)  # Close the window after 2 seconds
+
+    def updateWaterLabel():
+        currentWater = float(waterSlider.get())
+        waterValueLabel.configure(text=f"Water: {currentWater:.2f} L")
+
+    # Slider to track water intake
+    waterSlider = ctk.CTkSlider(waterWindow, from_=0, to=5, number_of_steps=50, command=lambda x: updateWaterLabel())
+    waterSlider.pack(pady=20)
+
+    waterValueLabel = ctk.CTkLabel(waterWindow, text="Water: 0.00 L", font=("Aptos", 14))
+    waterValueLabel.pack()
+
+    # Save Button
+    saveButton = ctk.CTkButton(waterWindow, text="Save", command=saveWater)
+    saveButton.pack(pady=20)
+
+    waterWindow.wait_window()
+# End trackWater
 
 # Start Track Sleep
 def trackSleep():
@@ -399,54 +305,73 @@ def trackSleep():
 
 # Start Track Exercise
 def trackExercise():
-    # DELETE ME: Temporary Menu until UI is implemented
-    choice = int(input("""
-    Slect the type of exercise:
-    1) Cardio
-    2) Yoga
-    3) Weights
-    4) Sports/Recreation
-    5) Walking
-    
-    Please enter a choice: """))
+    # Create Exercise Tracker Window
+    exerciseWindow = ctk.CTkToplevel()
+    exerciseWindow.title("Exercise Tracker")
+    exerciseWindow.geometry("600x400")
 
-    global exerciseEntry
+    exerciseTypes = {1: "Cardio", 2: "Yoga", 3: "Weights", 4: "Sports/Recreation", 5: "Walking"}
+    selectedExercise = ctk.IntVar()  # Variable to store user's choice
 
-    exerciseTypes = {1: "Cardio", 2: "Yoga", 3: "Weights", 4: "Sports/Recreation", 5: "Walking"}   # Creates a Dictionary to relate choice to exercise
-    
-    # Get duration from user input
-    try:
-        duration = int(input(f"Please enter a minute amount for the duration of {exerciseTypes[choice]} completed: "))
-    except ValueError:
-        # FINISH ME: Add an error window
-        showErrorPopup("Invalid Input. Please enter amount of minutes for duration")
-        return
+    def saveExercise():
+        global exerciseEntry
+        try:
+            choice = selectedExercise.get()
+            if choice not in exerciseTypes:
+                ctk.CTkLabel(exerciseWindow, text="Please select a valid exercise type.", fg_color="red").pack(pady=5)
+                return
 
-    # Get duration for entry
-    if duration >= 30:
-        goalAchieved = True
-    else:
-        goalAchieved = False
+            # Get duration
+            try:
+                duration = int(durationEntry.get())
+                if duration <= 0:
+                    raise ValueError("Duration must be a positive integer.")
+            except ValueError as ve:
+                ctk.CTkLabel(exerciseWindow, text=str(ve), fg_color="red").pack(pady=5)
+                return
 
-    # Get timestamp for entry
-    timeStamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            # Log entry
+            exerciseEntry = {
+                "exerciseType": exerciseTypes[choice],
+                "duration": duration
+            }
 
-    # Create entry based off of data using a dictionary
-    exerciseEntry = {
-        "exerciseType": exerciseTypes[choice],
-        "duration": duration,
-        "goalAchieved": goalAchieved,
-        "timeStamp": timeStamp
-    }
+            ctk.CTkLabel(exerciseWindow, text="Exercise logged successfully!", fg_color="green").pack(pady=5)
+            exerciseWindow.after(2000, exerciseWindow.destroy)  # Close the window after 2 seconds
+        except Exception as e:
+            ctk.CTkLabel(exerciseWindow, text=f"Error: {e}", fg_color="red").pack(pady=5)
 
-    print(f"Good job! Exercise was logged: {exerciseEntry}")
-# End of Track Exercise
+    # Prompt user to select exercise type
+    ctk.CTkLabel(exerciseWindow, text="Select the type of exercise:", font=("Aptos", 16)).pack(pady=10)
+
+    for key, value in exerciseTypes.items():
+        ctk.CTkRadioButton(exerciseWindow, text=value, variable=selectedExercise, value=key).pack(anchor="w", padx=20)
+
+    # Prompt user to enter duration
+    ctk.CTkLabel(exerciseWindow, text="Enter duration in minutes:", font=("Aptos", 16)).pack(pady=10)
+    durationEntry = ctk.CTkEntry(exerciseWindow, width=200)
+    durationEntry.pack(pady=10)
+
+    # Save button
+    saveButton = ctk.CTkButton(exerciseWindow, text="Save", command=saveExercise)
+    saveButton.pack(pady=20)
+
+    exerciseWindow.wait_window()
+# End Track Exercise
 
 #__Shabhan's__Badge_System#_____________________________________
 def doBadgeSystem():
     # FINISH ME:
-    print("TEST: Analytics Window...")
-    pass
+    badgeWindow = ctk.CTkToplevel()
+    badgeWindow.title("Analytics Feature")
+    badgeWindow.geometry("600x400")
+
+    ctk.CTkLabel(badgeWindow, text="Congratulations!\nYou found a feature that hasn't been implemented yet.\n Please be patient with us, and it will be available soon!", font=("Aptos", 16)).pack(pady=20)
+
+    exitButton = ctk.CTkButton(badgeWindow, text="Close", command=badgeWindow.destroy)
+    exitButton.pack(pady=5)
+
+    badgeWindow.wait_window()
 #_______________________________________________________________
 
 # Start Mood Journal
@@ -478,21 +403,43 @@ def openMoodJournal():
     journalWindow.wait_window()
 # End Mood Journal
 
+# Start Save Function
 def saveDailyProgress():
-    # FINISH ME:
-    print("TEST: Progress Saved!")
-    pass
+    global userData
+    userData = {
+        "moodEntry": moodEntry,
+        "foodEntry": foodEntry,
+        "waterEntry": waterEntry,
+        "sleepEntry": sleepEntry,
+        "exerciseEntry": exerciseEntry,
+        "journalEntry": journalEntry,
+        "entryTimestamp": entryTimestamp
+    }
+    try:
+        with open("user_data.json", "w") as file:
+            json.dump(userData, file, indent=4)
+        print("Daily progress saved successfully.")
+    except Exception as e:
+        print(f"Error {e} has occured")
+# End Save Function
+
+# Start Load Function
+def loadDailyProgress():
+    global userData
+    try:
+        with open("user_data.json", "r") as file:
+            userData = json.load(file)
+        print("Daily progress loaded successfully.")    # DELETE ME: Temporary to confirm loaded data
+    except FileNotFoundError:
+        print("No saved data found. Starting fresh.")
+        userData = {}
+    except Exception as e:
+        print(f"An error occurred while finding data: {e}")
+# End Load Function
 
 #___Shabhan's__Logout()_________________________________
 def logout():
-    try:                                                                         
-        with open(log_file, 'w') as f:                                 # write mode, which clears its contents
-            pass                                                              # just clear the file
-        print("Logged out successfully.")
-    except IOError:
-        print("Permission denied ")
-    except Exception as e:
-        print(f"Error : {e}")
+    saveDailyProgress()
     
 #_______________________________________________________#
 
@@ -517,9 +464,4 @@ def showErrorPopup(errorMessage):
 if __name__ == "__main__":
     doLogIn()
     displayDashboard()
-    print(exerciseEntry)
-    print(foodEntry)
-    print(sleepEntry)
-    print(moodEntry)
-    print(waterEntry)
-    print(journalEntry)
+    print(userData)
