@@ -1,0 +1,19 @@
+# Priority 1
+dashboardLoop() # Zac
+trackExercise() # Zac
+
+
+trackSleep() # Raena
+trackFood() # Raena
+trackMood() # Jason - Switched to William
+trackWater() # William
+
+
+
+# Priority 2
+doLogIn() # Shabhan
+logout()  # Shabhan
+
+Priority 3
+openMoodJournal() # William - Switched to Zac
+saveDailyProgress() # Zac
