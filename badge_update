@@ -1,0 +1,21 @@
+def doBadgeSystem():
+
+
+    badgeWindow = ctk.CTkToplevel()
+    badgeWindow.title("Analytics Feature")
+    badgeWindow.geometry("600x400")
+
+        #TODO: if save data == satisfactory :
+
+
+    badge_img_path = "C:\\Users\cheap\OneDrive\Pictures\Screenshots\Screenshot 2023-12-04 103732.png"
+    badge_img = ctk.CTkImage(dark_image=Image.open(badge_img_path), size=(200, 200))
+    badge_label = ctk.CTkLabel(badgeWindow, image=badge_img)
+    badge_label.pack(pady=20)
+
+    ctk.CTkLabel(badgeWindow, text="Congratulations!\nYou earned a badge!", font=("Aptos", 16)).pack(pady=20)
+
+    exitButton = ctk.CTkButton(badgeWindow, text="Close", command=badgeWindow.destroy)
+    exitButton.pack(pady=5)
+
+    badgeWindow.wait_window()
