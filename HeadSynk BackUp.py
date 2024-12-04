@@ -5,13 +5,22 @@ import os
 import datetime # for data entries
 import json # For saving data
 import customtkinter as ctk # For UI
+from PIL import Image
 
 # TODO
 # - make all function display a helpful message
 # - make all user interactable functions happen in CTK windows
 # - make all popup windows disappear after a few seconds
 
-userData = {}
+# This is to keep track of data for 2 weeks
+mondayData1 = {};       mondayData2 = {}
+tuesdayData1 = {};      tuesdayData2 = {}
+wednesdayData1 = {};    wednesdayData2 = {}
+thursdayData1 = {};     thursdayData2 = {}
+fridayData1 = {};       fridayData2 = {}
+saturdayData1 = {};     saturdayData2 = {}
+sundayData1 = {};       sundayData2 = {}
+
 moodEntry = {}
 foodEntry = {}
 waterEntry = {}
@@ -19,6 +28,30 @@ sleepEntry = {}
 exerciseEntry = {}
 journalEntry = {}
 entryTimestamp = datetime.datetime.now().strftime("%Y-%m-%d")
+
+tempUserData = {
+    "moodEntry": moodEntry,
+    "foodEntry": foodEntry,
+    "waterEntry": waterEntry,
+    "sleepEntry": sleepEntry,
+    "exerciseEntry": exerciseEntry,
+    "journalEntry": journalEntry,
+    "entryTimestamp": entryTimestamp
+}
+
+# This is the global variable that stores the dictionary dump
+twoWeekData = {}
+# This is to keep track of data for 2 weeks
+dataTemplate = {
+    "week1": {
+        "monday": tempUserData, "tuesday": tempUserData, "wednesday": tempUserData, "thursday": tempUserData, "friday": tempUserData, "saturday": tempUserData, "sunday": tempUserData
+    },
+    "week2": {
+        "monday": tempUserData, "tuesday": tempUserData, "wednesday": tempUserData, "thursday": tempUserData, "friday": tempUserData, "saturday": tempUserData, "sunday": tempUserData
+    }
+}
+
+dataFile = "user_data.json"
 
 #_Start_HeadSynk_______________________________________________
 
@@ -136,10 +169,10 @@ def trackMood():
             print("That is not on the scale")
         elif moodTrack < 3:
             print("Things will get better")
-            goalAchieved = True
+            goalAchieved = 1
         else:
             print("That's great.")
-            goalAchieved = True
+            goalAchieved = 1
 
         # Create entry based off of data using a dictionary
         moodEntry = {
@@ -186,7 +219,7 @@ def trackFood():
 
         # Gets checked items
         checkedItems = [food for food, var in checkListDictionary.items() if var.get()]
-        goalAchieved = len(checkedItems) == 5  # True if at least 5 groups are checked
+        goalAchieved = int(len(checkedItems) == 5)  # True if at least 5 groups are checked
 
         # moves selected options to the global variable
         foodEntry = {
@@ -228,10 +261,10 @@ def trackWater():
 
         if waterAmount > 2.7:
             print("You have drunk the required amount for today")
-            goalAchieved = True
+            goalAchieved = 1
         else:
             print("You should drink some more water")
-            goalAchieved = False
+            goalAchieved = 0
 
         # Create entry based off of data using a dictionary
         waterEntry = {
@@ -269,9 +302,9 @@ def trackSleep():
 
         # if sleep is greater than 7, then the goal has been achieved
         if sliderValue > 7:
-            goalAchieved = True
+            goalAchieved = 1
         else:
-            goalAchieved = False
+            goalAchieved = 0
 
         # Saves it to the sleepEntry dictionary
         sleepEntry = {"sleepAmount": sliderValue, "goalAchieved":goalAchieved}
@@ -326,6 +359,10 @@ def trackExercise():
                 duration = int(durationEntry.get())
                 if duration <= 0:
                     raise ValueError("Duration must be a positive integer.")
+                elif duration < 30:
+                    goalAchieved = 0
+                elif duration >= 30:
+                    goalAchieved = 1
             except ValueError as ve:
                 ctk.CTkLabel(exerciseWindow, text=str(ve), fg_color="red").pack(pady=5)
                 return
@@ -333,7 +370,8 @@ def trackExercise():
             # Log entry
             exerciseEntry = {
                 "exerciseType": exerciseTypes[choice],
-                "duration": duration
+                "duration": duration,
+                "goalAchieved": goalAchieved
             }
 
             ctk.CTkLabel(exerciseWindow, text="Exercise logged successfully!", fg_color="green").pack(pady=5)
@@ -362,11 +400,23 @@ def trackExercise():
 #__Shabhan's__Badge_System#_____________________________________
 def doBadgeSystem():
     # FINISH ME:
+
+    
+
+
     badgeWindow = ctk.CTkToplevel()
-    badgeWindow.title("Analytics Feature")
+    badgeWindow.title("Congratulations!")
     badgeWindow.geometry("600x400")
 
-    ctk.CTkLabel(badgeWindow, text="Congratulations!\nYou found a feature that hasn't been implemented yet.\n Please be patient with us, and it will be available soon!", font=("Aptos", 16)).pack(pady=20)
+        #TODO: if save data == satisfactory :
+
+
+    badge_img_path = "D:\\1 - Computer Science Classes\\Headsynk\\Screenshot 2024-10-31 231643.png"
+    badge_img = ctk.CTkImage(dark_image=Image.open(badge_img_path), size=(200, 200))
+    badge_label = ctk.CTkLabel(badgeWindow, image=badge_img)
+    badge_label.pack(pady=20)
+
+    ctk.CTkLabel(badgeWindow, text="Congratulations!\nYou earned a badge!", font=("Aptos", 16)).pack(pady=20)
 
     exitButton = ctk.CTkButton(badgeWindow, text="Close", command=badgeWindow.destroy)
     exitButton.pack(pady=5)
@@ -403,42 +453,100 @@ def openMoodJournal():
     journalWindow.wait_window()
 # End Mood Journal
 
-# Start Save Function
-def saveDailyProgress():
-    global userData
-    userData = {
-        "moodEntry": moodEntry,
-        "foodEntry": foodEntry,
-        "waterEntry": waterEntry,
-        "sleepEntry": sleepEntry,
-        "exerciseEntry": exerciseEntry,
-        "journalEntry": journalEntry,
-        "entryTimestamp": entryTimestamp
-    }
-    try:
-        with open("user_data.json", "w") as file:
-            json.dump(userData, file, indent=4)
-        print("Daily progress saved successfully.")
-    except Exception as e:
-        print(f"Error {e} has occured")
-# End Save Function
+# Start loadData
+def loadData():
+    # Load two-week data from JSON file or create a new one if it doesn't exist
+    global twoWeekData
+    def assignVariables():
+        global tempUserData     # Initalizes global variables within this function
+        global mondayData1;     global mondayData2
+        global tuesdayData1;    global tuesdayData2
+        global wednesdayData1;  global wednesdayData2
+        global thursdayData1;   global thursdayData2
+        global fridayData1;     global fridayData2
+        global saturdayData1;   global saturdayData2
+        global sundayData1;     global sundayData2
 
-# Start Load Function
-def loadDailyProgress():
-    global userData
+        # assigns global variables with their data from the JSON file
+        mondayData1 = twoWeekData["week1"]["monday"];       mondayData2 = twoWeekData["week2"]["monday"]
+        tuesdayData1 = twoWeekData["week1"]["tuesday"];     tuesdayData2 = twoWeekData["week2"]["tuesday"]
+        wednesdayData1 = twoWeekData["week1"]["wednesday"]; wednesdayData2 = twoWeekData["week2"]["wednesday"]
+        thursdayData1 = twoWeekData["week1"]["thursday"];   thursdayData2 = twoWeekData["week2"]["thursday"]
+        fridayData1 = twoWeekData["week1"]["friday"];       fridayData2 = twoWeekData["week2"]["friday"]
+        saturdayData1 = twoWeekData["week1"]["saturday"];   saturdayData2 = twoWeekData["week2"]["saturday"]
+        sundayData1 = twoWeekData["week1"]["sunday"];       sundayData2 = twoWeekData["week2"]["sunday"]
+
+        # FIXME - reset data from two weeks ago to standard dictionary
+        currentWeek = "week1" if datetime.datetime.now() - datetime.timedelta(days=7) < datetime.datetime.now() else "week2"
+        currentDay = datetime.datetime.now().strftime("%A").lower()
+
+        tempUserData = twoWeekData[currentWeek].get(currentDay, {})
+    # Checks if dataFile exists
+    if os.path.exists(dataFile):
+        # if it exists, if data has week1 or week2, return data
+        with open(dataFile, "r") as file:
+            try:
+                twoWeekData = json.load(file)
+                # else, resets tempUserData to dataTemplate
+                if "week1" not in twoWeekData or "week2" not in twoWeekData:
+                    print("Data structure incomplete. Resetting to template.")
+                    twoWeekData = dataTemplate.copy()
+            except json.JSONDecodeError:
+                # resets to template if the file is corrupted
+                print("Corrupted JSON file. Resetting to template.")
+                twoWeekData = dataTemplate.copy()
+    else:
+        # Return the two-week data as a dictionary
+        twoWeekData = dataTemplate.copy()
+    assignVariables()
+# End loadData
+
+# Start saveDailyProgress
+def saveDailyProgress():
+    def saveTwoWeekData(data):
+        print("Saving TwoWeekData", data)
+        try:
+            # saves 'data' (all of the information for two weeks) by dumping it all into data file
+            with open(dataFile, "w") as file:
+                print("dumping data:", data)
+                json.dump(data, file, indent=4)
+                print("dumped data")
+        except Exception as e:
+            print(f"Error saving data: {e}")
+        print("Data saved")
+    # initializes global variables in the function
+    global tempUserData
+    global twoWeekData
+
+    tempUserData = {
+    "moodEntry": moodEntry,
+    "foodEntry": foodEntry,
+    "waterEntry": waterEntry,
+    "sleepEntry": sleepEntry,
+    "exerciseEntry": exerciseEntry,
+    "journalEntry": journalEntry,
+    "entryTimestamp": entryTimestamp
+    }
+    
     try:
-        with open("user_data.json", "r") as file:
-            userData = json.load(file)
-        print("Daily progress loaded successfully.")    # DELETE ME: Temporary to confirm loaded data
-    except FileNotFoundError:
-        print("No saved data found. Starting fresh.")
-        userData = {}
+        # FIXME
+        # assigns currentWeek with 'week1' if today's date was more than a week ago
+        print("The broken week1/week2 counters")
+        currentWeek = "week1" if datetime.datetime.now() - datetime.timedelta(days=7) < datetime.datetime.now() else "week2"
+        currentDay = datetime.datetime.now().strftime("%A").lower()
+
+        print("Accessing twoWeekData:", twoWeekData[currentWeek][currentDay])
+        print(tempUserData)
+        twoWeekData[currentWeek][currentDay] = tempUserData
+        saveTwoWeekData(twoWeekData)
+        print(f"Saved data for {currentDay} in {currentWeek}.")
     except Exception as e:
-        print(f"An error occurred while finding data: {e}")
-# End Load Function
+        print(f"Error during saving process: {e}")
+# End saveDailyProgress
 
 #___Shabhan's__Logout()_________________________________
 def logout():
+    doBadgeSystem()
     saveDailyProgress()
     
 #_______________________________________________________#
@@ -463,5 +571,5 @@ def showErrorPopup(errorMessage):
 # main "function" basically
 if __name__ == "__main__":
     doLogIn()
+    loadData()
     displayDashboard()
-    print(userData)
