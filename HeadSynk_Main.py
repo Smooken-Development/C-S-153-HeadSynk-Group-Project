@@ -7,11 +7,6 @@ import json # For saving data
 import customtkinter as ctk # For UI
 from PIL import Image
 
-# TODO
-# - make all function display a helpful message
-# - make all user interactable functions happen in CTK windows
-# - make all popup windows disappear after a few seconds
-
 # This is to keep track of data for 2 weeks
 mondayData1 = {};       mondayData2 = {}
 tuesdayData1 = {};      tuesdayData2 = {}
@@ -406,9 +401,10 @@ def doBadgeSystem():
     badgeLabel= ctk.CTkLabel(dashboard, text="Congratulations!\nYou earned a badge!", text_color="Light Green", font=("Aptos", 16))
     badgeLabel.pack(pady=2)
 
-        #TODO: if save data == satisfactory :
+    #TODO: if save data == satisfactory :
 
-    badge_img_path = "D:\\1 - Computer Science Classes\\Headsynk\\Screenshot 2024-10-31 231643.png"
+    # FIXME: Add New Badge Image
+    badge_img_path = "D:\\1 - Computer Science Classes\\Headsynk\\Screenshot 2024-10-31 231643.png" # Change this to whatever your image is
     badge_img = ctk.CTkImage(dark_image=Image.open(badge_img_path), size=(200, 200))
     badge_label = ctk.CTkLabel(dashboard, image=badge_img)
     badge_label.pack(pady=20)
@@ -571,7 +567,7 @@ def showErrorPopup(errorMessage):
 if __name__ == "__main__":
     dashboard = ctk.CTk()
     dashboard.title("HeadSynk")
-    dashboard.geometry("350x500")
+    dashboard.geometry("600x600")
     doLogIn()
     loadData()
     displayDashboard()
