@@ -109,56 +109,53 @@ def doLogIn():
         else:
             print("access denied")
 
-
-# The main dashboard menu/window loop
-# Start Dashboard Loop
-# The main dashboard menu/window loop
-# Start Dashboard Loop
+                                                   
+                                                            #  main dashboard menu/window loop
 def displayDashboard():
-    dashboard = ctk.CTk()
-    dashboard.title("HeadSynk")
-    dashboard.geometry("600x400")
+    for widget in dashboard.winfo_children():                    # Clear the frame
+        widget.destroy()
+
     
     # Button definitions with corrected commands
-    moodButton = ctk.CTkButton(dashboard, text="Mood Tracker", command=trackMood)
+    moodButton = ctk.CTkButton(dashboard, text="Mood Tracker", command=lambda: trackMood())
     moodButton.pack(pady=5)
     
-    foodButton = ctk.CTkButton(dashboard, text="Food Tracker", command=trackFood)
-    foodButton.pack(pady=5)
+    foodButton = ctk.CTkButton(dashboard, text="Food Tracker", command=lambda: trackFood())
+    foodButton.pack(pady=5)  
     
-    waterButton = ctk.CTkButton(dashboard, text="Water Tracker", command=trackWater)
+    waterButton = ctk.CTkButton(dashboard, text="Water Tracker", command=lambda: trackWater())
     waterButton.pack(pady=5)
 
-    sleepButton = ctk.CTkButton(dashboard, text="Sleep Tracker", command=trackSleep)
+    sleepButton = ctk.CTkButton(dashboard, text="Sleep Tracker", command=lambda: trackSleep())
     sleepButton.pack(pady=5)
 
-    exerciseButton = ctk.CTkButton(dashboard, text="Exercise Tracker", command=trackExercise)
+    exerciseButton = ctk.CTkButton(dashboard, text="Exercise Tracker", command=lambda: trackExercise())
     exerciseButton.pack(pady=5)
 
-    badgeButton = ctk.CTkButton(dashboard, text="See Current Badge", command=doBadgeSystem)
+    badgeButton = ctk.CTkButton(dashboard, text="See Current Badge", command=lambda: doBadgeSystem())
     badgeButton.pack(pady=5)
 
     saveProgressButton = ctk.CTkButton(dashboard, text="Save Daily Progress", command=saveDailyProgress)
     saveProgressButton.pack(pady=5)
 
-    journalButton = ctk.CTkButton(dashboard, text="Journal", command=openMoodJournal)
+    journalButton = ctk.CTkButton(dashboard, text="Journal", command=lambda: openMoodJournal())
     journalButton.pack(pady=5)
 
     logoutButton = ctk.CTkButton(dashboard, text="Log Out", command=lambda: logout() or dashboard.quit())  # Logout and close the window
     logoutButton.pack(pady=20)
 
-    # Start the window loop
-    dashboard.mainloop()
 
-    print("Goodbye!")
+ 
 # End Dashboard Loop
 
 # Start trackMood
 def trackMood():
-    # Create Mood Tracker Window
-    moodWindow = ctk.CTkToplevel()
-    moodWindow.title("Mood Tracker")
-    moodWindow.geometry("600x400")
+    for widget in dashboard.winfo_children():                    # Clear the frame
+        widget.destroy()
+
+                                                            # Create Mood Tracker widgets
+    moodLabel = ctk.CTkLabel(dashboard, text="On a scale of 1-5, how do you feel today?")
+    moodLabel.pack(pady=20)
 
     def saveMood():
         global moodEntry
@@ -166,12 +163,12 @@ def trackMood():
 
         # Checking mood and updating goal status
         if moodTrack > 5:
-            print("That is not on the scale")
+            moodLabel.configure(text="That is not on the scale", fg_color="purple")
         elif moodTrack < 3:
-            print("Things will get better")
+            moodLabel.configure(text="Remember: things will always get \nbetter with consistent effort!", text_color="Yellow")
             goalAchieved = 1
         else:
-            print("That's great.")
+            moodLabel.configure(text="That's fantastic!", text_color="Light Green")
             goalAchieved = 1
 
         # Create entry based off of data using a dictionary
@@ -180,34 +177,36 @@ def trackMood():
             "goalAchieved": goalAchieved
         }
 
-        ctk.CTkLabel(moodWindow, text="Mood logged successfully!", fg_color="green").pack(pady=5)
-        moodWindow.after(2000, moodWindow.destroy)  # Close the window after 2 seconds
 
     def updateMoodLabel():
         currentMood = int(moodSlider.get())
         moodValueLabel.configure(text=f"Mood: {currentMood}")
 
-    # Slider to track mood
-    moodSlider = ctk.CTkSlider(moodWindow, from_=1, to=5, number_of_steps=4, command=lambda x: updateMoodLabel())
+                                                                                    # Slider to track mood
+    moodSlider = ctk.CTkSlider(dashboard, from_=1, to=5, number_of_steps=4, command=lambda x: updateMoodLabel())
     moodSlider.pack(pady=20)
 
-    moodValueLabel = ctk.CTkLabel(moodWindow, text="Mood: 3", font=("Aptos", 14))
+    moodValueLabel = ctk.CTkLabel(dashboard, text="Mood: 3", font=("Aptos", 14))
     moodValueLabel.pack()
-
-    # Save Button
-    saveButton = ctk.CTkButton(moodWindow, text="Save", command=saveMood)
+                                                                                # Save progress
+    saveButton = ctk.CTkButton(dashboard, text="save", command=saveMood)
     saveButton.pack(pady=20)
+                                                                                #return to dashboard
+    backButton = ctk.CTkButton(dashboard, text="Back", command=displayDashboard)
+    backButton.pack(pady=10)
 
-    moodWindow.wait_window()
+
+
 # End trackMood
 
 # Start Food Tracker
 def trackFood():
 
-    # Initializes the foodWindow
-    foodWindow = ctk.CTkToplevel()
-    foodWindow.title("Food Tracker")
-    foodWindow.geometry("600x400")  # consistent window geometry
+    for widget in dashboard.winfo_children():                    # Clear the frame
+        widget.destroy()
+            # Prompt to get food groups
+    foodLabel = ctk.CTkLabel(dashboard, text="What food groups have you eaten today?")
+    foodLabel.pack(pady=10)
 
     # Food categories and variables to track checks
     foods = ['Fruits', 'Vegetables', 'Grains', 'Protein', 'Dairy']
@@ -219,7 +218,7 @@ def trackFood():
 
         # Gets checked items
         checkedItems = [food for food, var in checkListDictionary.items() if var.get()]
-        goalAchieved = int(len(checkedItems) == 5)  # True if at least 5 groups are checked
+        goalAchieved = int(len(checkedItems) == 5)                      # True if at least 5 groups are checked
 
         # moves selected options to the global variable
         foodEntry = {
@@ -227,88 +226,92 @@ def trackFood():
             "goalAchieved": goalAchieved
         }
 
-        # Confirms food logging
-        ctk.CTkLabel(foodWindow, text="Food groups logged successfully!", fg_color="green").pack(pady=5)
-        ctk.CTkLabel(foodWindow, text="Remember: Try to eat at least two meals with all of these daily!").pack(pady=5)
+                                                                            # Confirms food logging
+        foodLabel.configure(text="Food groups logged successfully!", text_color="Light Green")
+        ctk.CTkLabel(dashboard, text="Remember: Try to eat at least two\nmeals with all of these daily!", text_color="Light Blue").pack(pady=5)
         
-        # Closes popup window after some time
-        foodWindow.after(2000, foodWindow.destroy)
-
-    # Prompt to get food groups
-    ctk.CTkLabel(foodWindow, text="What food groups have you eaten today?").pack(pady=10)
-
     # Generate checkboxes for each food group
     for food in foods:
-        ctk.CTkCheckBox(foodWindow, text=food, variable=checkListDictionary[food]).pack(anchor="w", padx=20)
+        ctk.CTkCheckBox(dashboard, text=food, variable=checkListDictionary[food]).pack(anchor="w", padx=20)
 
     # Save button
-    ctk.CTkButton(foodWindow, text="Save", command=checkListOptions).pack(pady=20)
+    ctk.CTkButton(dashboard, text="Save", command=checkListOptions).pack(pady=20)
 
-    # keeps foodWindow popped up until closed
-    foodWindow.wait_window()
+    # keeps dashboard popped up until closed
+    backButton = ctk.CTkButton(dashboard, text="Back", command=displayDashboard)
+    backButton.pack(pady=10)
+    
 # End Food Tracker
 
-# Start trackWater
 def trackWater():
-    # Create Water Tracker Window
-    waterWindow = ctk.CTkToplevel()
-    waterWindow.title("Water Tracker")
-    waterWindow.geometry("600x400")
+                                                            #create Water Tracker Window
+    for widget in dashboard.winfo_children():                    # Clear the frame
+        widget.destroy()
+
+    waterLabel = ctk.CTkLabel(dashboard, text="How much water have you drank today?")
+    waterLabel.pack(pady=20)        
 
     def saveWater():
         global waterEntry
         waterAmount = float(waterSlider.get())
 
         if waterAmount > 2.7:
-            print("You have drunk the required amount for today")
+            waterLabel.configure(text="Good job on reaching your intake goal!", text_color="Light Green")
             goalAchieved = 1
         else:
-            print("You should drink some more water")
+            waterLabel.configure(text="Make sure to drink at least 2.7 liters a day!", text_color="Yellow")
             goalAchieved = 0
 
-        # Create entry based off of data using a dictionary
+                                                            #create entry based off of data using a dictionary
         waterEntry = {
             "waterAmount": waterAmount,
             "goalAchieved": goalAchieved
         }
 
-        ctk.CTkLabel(waterWindow, text="Water logged successfully!", fg_color="green").pack(pady=5)
-        waterWindow.after(2000, waterWindow.destroy)  # Close the window after 2 seconds
+        ctk.CTkLabel(dashboard, text="Water logged successfully!", text_color="Light Green").pack(pady=5)
 
     def updateWaterLabel():
         currentWater = float(waterSlider.get())
         waterValueLabel.configure(text=f"Water: {currentWater:.2f} L")
 
     # Slider to track water intake
-    waterSlider = ctk.CTkSlider(waterWindow, from_=0, to=5, number_of_steps=50, command=lambda x: updateWaterLabel())
+    waterSlider = ctk.CTkSlider(dashboard, from_=0, to=5, number_of_steps=50, command=lambda x: updateWaterLabel())
     waterSlider.pack(pady=20)
 
-    waterValueLabel = ctk.CTkLabel(waterWindow, text="Water: 0.00 L", font=("Aptos", 14))
+    waterValueLabel = ctk.CTkLabel(dashboard, text="Water: 2.70 L", font=("Aptos", 14))
     waterValueLabel.pack()
 
     # Save Button
-    saveButton = ctk.CTkButton(waterWindow, text="Save", command=saveWater)
+    saveButton = ctk.CTkButton(dashboard, text="Save", command=saveWater)
     saveButton.pack(pady=20)
 
-    waterWindow.wait_window()
+    backButton = ctk.CTkButton(dashboard, text="Back", command=displayDashboard)
+    backButton.pack(pady=10)
+
 # End trackWater
 
 # Start Track Sleep
 def trackSleep():
+    for widget in dashboard.winfo_children():                    # Clear the frame
+        widget.destroy()
+    sleepLabel = ctk.CTkLabel(dashboard, text="How many hours did you sleep last night?", font=("Aptos", 16))
+    sleepLabel.pack(side="top", pady = 20)
+
     def saveSleep():
         # gets sleep hours 
         global sleepEntry
         sliderValue = int(slider.get())
 
         # if sleep is greater than 7, then the goal has been achieved
-        if sliderValue > 7:
+        if sliderValue >= 7:
             goalAchieved = 1
+            sleepLabel.configure(text="Good job on getting a good night's rest!", text_color="Light Green")
         else:
             goalAchieved = 0
+            sleepLabel.configure(text="Make sure to get enough sleep tonight\nYou need it to function!", text_color="Light Blue")
 
         # Saves it to the sleepEntry dictionary
         sleepEntry = {"sleepAmount": sliderValue, "goalAchieved":goalAchieved}
-        sleepWindow.destroy()
 
     def updateLabel():  # This is to make the number pop below the slider
         currentValue = int(slider.get())
@@ -317,33 +320,31 @@ def trackSleep():
         else:
             sliderValueLabel.configure(text=f"SleepHours: {currentValue}")
 
-    sleepWindow = ctk.CTkToplevel()
-    sleepWindow.title("Sleep Tracker")
-    sleepWindow.geometry("600x400")
 
-    label = ctk.CTkLabel(sleepWindow, text="How many hours did you sleep last night?", font=("Aptos", 16))
-    label.pack(side="top", pady = 20)
-
-    slider = ctk.CTkSlider(sleepWindow, from_=0, to=10, number_of_steps=10, command=lambda x: updateLabel())
+    slider = ctk.CTkSlider(dashboard, from_=0, to=10, number_of_steps=10, command=lambda x: updateLabel())
     slider.pack(pady=20)
 
-    sliderValueLabel = ctk.CTkLabel(sleepWindow, text="SleepHours: 5", font=("Aptos", 14))
+    sliderValueLabel = ctk.CTkLabel(dashboard, text="SleepHours: 5", font=("Aptos", 14))
     sliderValueLabel.pack()
 
-    saveButton = ctk.CTkButton(sleepWindow, text="Confirm", command=saveSleep)
+    saveButton = ctk.CTkButton(dashboard, text="Confirm", command=saveSleep)
     saveButton.pack(pady=20)
 
-    sleepWindow.wait_window()
+    backButton = ctk.CTkButton(dashboard, text="Back", command=displayDashboard)
+    backButton.pack(pady=10)
 # End Track Sleep
+
+
 
 # Start Track Exercise
 def trackExercise():
-    # Create Exercise Tracker Window
-    exerciseWindow = ctk.CTkToplevel()
-    exerciseWindow.title("Exercise Tracker")
-    exerciseWindow.geometry("600x400")
+    for widget in dashboard.winfo_children():                    # Clear the frame
+        widget.destroy()
+        # Prompt user to select exercise type
+    exerciseLabel = ctk.CTkLabel(dashboard, text="Select the type of exercise:", font=("Aptos", 16))
+    exerciseLabel.pack(pady=10)
 
-    exerciseTypes = {1: "Cardio", 2: "Yoga", 3: "Weights", 4: "Sports/Recreation", 5: "Walking"}
+    exerciseTypes = {1: "Cardio", 2: "Yoga", 3: "Weights", 4: "Sports/Recreation", 5: "Walking", 6: "Other/None"}
     selectedExercise = ctk.IntVar()  # Variable to store user's choice
 
     def saveExercise():
@@ -351,20 +352,20 @@ def trackExercise():
         try:
             choice = selectedExercise.get()
             if choice not in exerciseTypes:
-                ctk.CTkLabel(exerciseWindow, text="Please select a valid exercise type.", fg_color="red").pack(pady=5)
+                ctk.CTkLabel(dashboard, text="Please select a valid exercise type.", text_color="Red").pack(pady=5)
                 return
 
             # Get duration
             try:
                 duration = int(durationEntry.get())
-                if duration <= 0:
-                    raise ValueError("Duration must be a positive integer.")
+                if duration < 0:
+                    raise ValueError("Duration must be an integer greater than 0.")
                 elif duration < 30:
                     goalAchieved = 0
                 elif duration >= 30:
                     goalAchieved = 1
             except ValueError as ve:
-                ctk.CTkLabel(exerciseWindow, text=str(ve), fg_color="red").pack(pady=5)
+                ctk.CTkLabel(dashboard, text=str(ve), text_color="red").pack(pady=5)
                 return
 
             # Log entry
@@ -374,88 +375,81 @@ def trackExercise():
                 "goalAchieved": goalAchieved
             }
 
-            ctk.CTkLabel(exerciseWindow, text="Exercise logged successfully!", fg_color="green").pack(pady=5)
-            exerciseWindow.after(2000, exerciseWindow.destroy)  # Close the window after 2 seconds
+            exerciseLabel.configure(text=f"Exercise logged successfully!", text_color="Light Green")
         except Exception as e:
-            ctk.CTkLabel(exerciseWindow, text=f"Error: {e}", fg_color="red").pack(pady=5)
+            ctk.CTkLabel(dashboard, text=f"Error: {e}", fg_color="Red", text_color="Yellow").pack(pady=5)
 
-    # Prompt user to select exercise type
-    ctk.CTkLabel(exerciseWindow, text="Select the type of exercise:", font=("Aptos", 16)).pack(pady=10)
+
 
     for key, value in exerciseTypes.items():
-        ctk.CTkRadioButton(exerciseWindow, text=value, variable=selectedExercise, value=key).pack(anchor="w", padx=20)
+        ctk.CTkRadioButton(dashboard, text=value, variable=selectedExercise, value=key).pack(anchor="w", padx=20)
 
     # Prompt user to enter duration
-    ctk.CTkLabel(exerciseWindow, text="Enter duration in minutes:", font=("Aptos", 16)).pack(pady=10)
-    durationEntry = ctk.CTkEntry(exerciseWindow, width=200)
+    ctk.CTkLabel(dashboard, text="Enter duration in minutes:", font=("Aptos", 16)).pack(pady=10)
+    durationEntry = ctk.CTkEntry(dashboard, width=200)
     durationEntry.pack(pady=10)
 
     # Save button
-    saveButton = ctk.CTkButton(exerciseWindow, text="Save", command=saveExercise)
+    saveButton = ctk.CTkButton(dashboard, text="Save", command=saveExercise)
     saveButton.pack(pady=20)
+    
+    backButton = ctk.CTkButton(dashboard, text="Back", command=displayDashboard)
+    backButton.pack(pady=10)
 
-    exerciseWindow.wait_window()
 # End Track Exercise
 
 #__Shabhan's__Badge_System#_____________________________________
 def doBadgeSystem():
     # FINISH ME:
-
-    
-
-
-    badgeWindow = ctk.CTkToplevel()
-    badgeWindow.title("Congratulations!")
-    badgeWindow.geometry("600x400")
+    for widget in dashboard.winfo_children():                    # Clear the frame
+        widget.destroy()
+    badgeLabel= ctk.CTkLabel(dashboard, text="Congratulations!\nYou earned a badge!", text_color="Light Green", font=("Aptos", 16))
+    badgeLabel.pack(pady=2)
 
         #TODO: if save data == satisfactory :
 
-
     badge_img_path = "D:\\1 - Computer Science Classes\\Headsynk\\Screenshot 2024-10-31 231643.png"
     badge_img = ctk.CTkImage(dark_image=Image.open(badge_img_path), size=(200, 200))
-    badge_label = ctk.CTkLabel(badgeWindow, image=badge_img)
+    badge_label = ctk.CTkLabel(dashboard, image=badge_img)
     badge_label.pack(pady=20)
 
-    ctk.CTkLabel(badgeWindow, text="Congratulations!\nYou earned a badge!", font=("Aptos", 16)).pack(pady=20)
-
-    exitButton = ctk.CTkButton(badgeWindow, text="Close", command=badgeWindow.destroy)
-    exitButton.pack(pady=5)
-
-    badgeWindow.wait_window()
+    backButton = ctk.CTkButton(dashboard, text="Back", command=displayDashboard)
+    backButton.pack(pady=10)
 #_______________________________________________________________
 
 # Start Mood Journal
 def openMoodJournal():
+    for widget in dashboard.winfo_children():                    # Clear the frame
+        widget.destroy()
+    journalLabel = ctk.CTkLabel(dashboard, text="What would you like to write about today?\n(Make sure to 'save' before leaving!)", font=("Aptos", 16))
+    journalLabel.pack(side="top", pady = 20)
     def saveEntry():
         global journalEntry
         # dictionary to stay consistent
         journalEntry = {"journalEntry": textBox.get("1.0", "end-1c")}   # 1.0 gets the textBox entry at column 1,
                                                                         # row 1. end-1c removes any lines after the last character
-        journalWindow.destroy()
+        journalLabel.configure(text="Entry saved successfully!", text_color="Light Green")
 
-    # Create a new window
-    journalWindow = ctk.CTkToplevel()
-    journalWindow.title("Mood Journal")
-    journalWindow.geometry("600x400")
 
     # Add a label to the top of the window
-    label = ctk.CTkLabel(journalWindow, text="Please write anything you'd like to remember from today!\nPlease make sure to press 'save' before exiting.", font=("Aptos", 16))
-    label.pack(side="top", pady = 20)
-
     # Add a text box for multi-line input
-    textBox = ctk.CTkTextbox(journalWindow, width=380, height=200)
+    textBox = ctk.CTkTextbox(dashboard, width=380, height=200)
     textBox.pack(pady=10)
 
     # Add a save button
-    saveButton = ctk.CTkButton(journalWindow, text="Save", command=saveEntry)
+    saveButton = ctk.CTkButton(dashboard, text="Save", command=saveEntry)
     saveButton.pack(pady=10)
 
-    journalWindow.wait_window()
+    backButton = ctk.CTkButton(dashboard, text="Back", command=displayDashboard)
+    backButton.pack(pady=10)
+
+
 # End Mood Journal
 
 # Start loadData
 def loadData():
-    # Load two-week data from JSON file or create a new one if it doesn't exist
+    for widget in dashboard.winfo_children():                    # Clear the frame
+        widget.destroy()
     global twoWeekData
     def assignVariables():
         global tempUserData     # Initalizes global variables within this function
@@ -503,6 +497,10 @@ def loadData():
 
 # Start saveDailyProgress
 def saveDailyProgress():
+    progLabel = ctk.CTkLabel(dashboard, text="Saving...", font=("Aptos", 16))
+    progLabel.pack()
+    
+
     def saveTwoWeekData(data):
         print("Saving TwoWeekData", data)
         try:
@@ -527,6 +525,7 @@ def saveDailyProgress():
     "journalEntry": journalEntry,
     "entryTimestamp": entryTimestamp
     }
+    progLabel.after(2000, progLabel.destroy)
     
     try:
         # FIXME
@@ -570,6 +569,10 @@ def showErrorPopup(errorMessage):
 
 # main "function" basically
 if __name__ == "__main__":
+    dashboard = ctk.CTk()
+    dashboard.title("HeadSynk")
+    dashboard.geometry("600x600")
     doLogIn()
     loadData()
     displayDashboard()
+    dashboard.mainloop()
